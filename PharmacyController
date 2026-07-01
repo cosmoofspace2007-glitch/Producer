@@ -1,0 +1,27 @@
+package com.example.pharmacy.controller;
+
+import com.example.pharmacy.service.PharmacyService;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/pharmacy")
+public class PharmacyController {
+
+    private final PharmacyService service;
+
+    public PharmacyController(PharmacyService service) {
+        this.service = service;
+    }
+
+    @PostMapping("/payment")
+    public String payment(
+            @RequestParam Long orderId,
+            @RequestParam Long medicineId,
+            @RequestParam Integer quantity){
+
+        service.payment(orderId, medicineId, quantity);
+
+        return "Thanh toán thành công!";
+    }
+
+}
