@@ -1,0 +1,27 @@
+package com.example.pharmacy.producer;
+
+import com.example.pharmacy.dto.OrderEvent;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderProducer {
+
+    private final KafkaTemplate<String, OrderEvent> kafkaTemplate;
+
+    public OrderProducer(KafkaTemplate<String, OrderEvent> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
+
+    public void sendOrder(OrderEvent event) {
+
+        kafkaTemplate.send(
+                "medicine-stock-events",
+                event.getMedicineId().toString(),   // Message Key
+                event
+        );
+
+        System.out.println("Send Success : " + event);
+    }
+
+}
