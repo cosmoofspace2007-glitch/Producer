@@ -1,0 +1,32 @@
+package com.example.pharmacy.service;
+
+import com.example.pharmacy.dto.OrderEvent;
+import com.example.pharmacy.producer.OrderProducer;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+@Service
+public class PharmacyService {
+
+    private final OrderProducer producer;
+
+    public PharmacyService(OrderProducer producer) {
+        this.producer = producer;
+    }
+
+    public void payment(Long orderId,
+                        Long medicineId,
+                        Integer quantity){
+
+        OrderEvent event = new OrderEvent(
+                orderId,
+                medicineId,
+                quantity,
+                LocalDateTime.now()
+        );
+
+        producer.sendOrder(event);
+    }
+
+}
